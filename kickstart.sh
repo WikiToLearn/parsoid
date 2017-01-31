@@ -7,16 +7,22 @@ fi
 # list of supported subdomain
 langs="it en de es fr pt sv ca meta pool"
 {
- echo "'use strict';"
- echo "exports.setup = function(parsoidConfig) {"
- echo 'parsoidConfig.userAgent = "WikiToLearn Parsoid";'
+ echo "worker_heartbeat_timeout: 300000"
+ echo "logging:"
+ echo " level: info"
+ echo "services:"
+ echo "- module: lib/index.js"
+ echo "  entrypoint: apiServiceWorker"
+ echo "  conf:"
+
+ echo "   mwApis:"
  for lang in $langs ; do
-   echo " parsoidConfig.setMwApi({ domain: '$lang.$WTL_DOMAIN_NAME', uri: 'http://$lang.$WTL_DOMAIN_NAME/api.php' });"
+   echo "   - uri: 'http://$lang.$WTL_DOMAIN_NAME/api.php'"
+   echo "     domain: '$lang.$WTL_DOMAIN_NAME'"
  done
- echo " parsoidConfig.loadWMF = false;"
- echo " parsoidConfig.useSelser = true;"
- echo "};"
-} > /parsoid/localsettings.js
+ echo "   loadWMF: true"
+ echo "   useSelser: true"
+} > /parsoid/config.yaml
 
 cd /parsoid
 
