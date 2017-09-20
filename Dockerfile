@@ -1,9 +1,9 @@
-FROM node:5
+FROM node:6
 ADD ./docker-npm-install.sh /docker-npm-install.sh
 
 ADD ./sources.list /etc/apt/sources.list
 
-RUN git clone https://github.com/wikimedia/parsoid && cd parsoid && git checkout v0.6.1 && rm -Rf .git/
+RUN git clone https://github.com/wikimedia/parsoid && cd parsoid && git checkout v0.7.1 && rm -Rf .git/
 
 WORKDIR parsoid
 
